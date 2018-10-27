@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Add Form</title>
+		<link rel="stylesheet" type="text/css" href="estilo.css">
+	</head>
+	<body>
+		<h1>New Product</h1>
+		<hr>
+		<form action="/spring-mvc-java/add" th:action="@{/add}" th:object="${product}" method="post" modelAttribute="product">
+			<p>Code: <input type="text" th:field="*{code}"/></p>
+			<p>Name: <input type="text" th:field="*{name}"/></p>
+			<p>Description: <input type="text" th:field="*{description}"/></p>
+			<p>Price: <input type="text" th:field="*{price}"/></p>
+			<br>
+			<p><input type="submit" value="Submit" role="button" class="buttonV"/> <input type="reset" value="Clear All" role="button" class="buttonY"/></p>
+		</form>
+		<br>
+		<a th:href="@{/list}" role="button" class="buttonB">Return</a>
+	</body>
+</html>

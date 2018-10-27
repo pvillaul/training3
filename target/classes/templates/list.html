@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Product List</title>
+		<link rel="stylesheet" type="text/css" href="estilo.css">
+	</head>
+	<body>
+		<h3>Product List</h3>
+		<hr>
+		<div th:each="prod : ${productos}">
+			<span><a th:href="@{/show/{id}/(id=${prod.code})}" th:text="${prod.name}"></a> <a th:href="@{/remove/{id}/(id=${prod.code})}" role="button" class="buttonR">Remove</a></span><br>
+		</div>
+		<br>
+		<a th:href="@{/}" role="button" class="buttonB">Return</a>
+	</body>
+</html>

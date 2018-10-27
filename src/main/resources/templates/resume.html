@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Resume Product</title>
+		<link rel="stylesheet" type="text/css" href="estilo.css">
+	</head>
+	<body>
+		<h1>Product Result</h1>
+		<hr>
+		<p th:text="'Code: ' + ${product.code}"></p>
+		<p th:text="'Name: ' + ${product.name}"></p>
+		<p th:text="'Description: ' + ${product.description}"></p>
+		<p th:text="'Price: ' + ${product.price}"></p>
+		<br>
+		<a th:href="@{/list}" role="button" class="buttonB">Return</a>
+	</body>
+</html>

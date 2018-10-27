@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Market</title>
+		<link rel="stylesheet" type="text/css" href="estilo.css">
+	</head>
+	<body>
+		<h3 th:text="${error.msg}"></h3>
+		<p th:text="${error.msg2}"></p>
+		<br>
+		<a th:href="@{/{url}/(url=${error.path})}" th:text="${error.pathtext}" role="button" class="buttonB"></a>
+	</body>
+</html>
