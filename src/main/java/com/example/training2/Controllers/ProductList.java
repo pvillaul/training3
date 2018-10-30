@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -28,11 +29,16 @@ public class ProductList {
 	@Autowired
 	private ProductRepository productRepository;
 	
+	@RequestMapping(value = {"/","/login"})
+	public String login() {
+		return "index";
+	}
+	/*
 	@GetMapping("/")
 	public String route() {
 		return "index";
-	}
-	
+	}*/
+	@Secured({"ROLE_USER","ROLE_ADMIN"})
 	@GetMapping("/list")
 	public String list(Model model) {
 		List<Product> productList = productRepository.findAll();
@@ -40,12 +46,14 @@ public class ProductList {
 		return "list";
 	}
 	
+	@Secured({"ROLE_USER","ROLE_ADMIN"})
 	@GetMapping("/show/{id}")
 	public String show(@PathVariable String id, Model model) {
 		model.addAttribute("product",productRepository.findByCode(id));
 		return "resume";
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@GetMapping("/remove/{id}")
 	public String delete(@PathVariable String id, Model model) {
 		if(productRepository.findByCode(id) != null) {
@@ -60,11 +68,13 @@ public class ProductList {
 		}
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@GetMapping("/addForm")
 	public String addProd(@ModelAttribute Product product) {
 		return "addForm";
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String newProd(@ModelAttribute("product") Product product,BindingResult result, ModelMap model) {
 		if(productRepository.findByCode(product.getCode()) == null) {
