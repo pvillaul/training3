@@ -14,6 +14,9 @@
 			<p><input type="submit" value="Submit" role="button"/> <input type="reset" value="Clear All" role="button"/></p>
 		</form>
 		<br>
-		<a th:href="@{/list}">Return</a>
+		<a th:href="@{/list}" role="button" class="buttonB">Return</a>
+		<footer>
+			<a th:href="@{/logout}" role="button" class="buttonR">&#10006; Cerrar Sesion</a>
+		</footer>
 	</body>
 </html>

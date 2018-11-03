@@ -4,8 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.security.RolesAllowed;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -18,8 +23,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.example.training2.Models.Product;
+import com.example.training2.Models.User;
 import com.example.training2.Models.Error;
 import com.example.training2.Repositories.ProductRepository;
+import com.example.training2.Repositories.UserRepository;
 
 @Controller
 public class ProductList {
@@ -33,6 +40,11 @@ public class ProductList {
 	public String login() {
 		return "index";
 	}
+	
+	@RequestMapping(value = {"/logout"})
+	public String logout() {
+		return "redirect:/login";
+	}
 	/*
 	@GetMapping("/")
 	public String route() {
@@ -41,8 +53,15 @@ public class ProductList {
 	@Secured({"ROLE_USER","ROLE_ADMIN"})
 	@GetMapping("/list")
 	public String list(Model model) {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails userDetails = null;
+		if (principal instanceof UserDetails) {
+		  userDetails = (UserDetails) principal;
+		}
+		
 		List<Product> productList = productRepository.findAll();
 		model.addAttribute("productos",productList);
+		model.addAttribute("user",userDetails);
 		return "list";
 	}
 	

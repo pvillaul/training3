@@ -9,5 +9,8 @@
 		<p th:text="${error.msg2}"></p>
 		<br>
 		<a th:href="@{/{url}/(url=${error.path})}" th:text="${error.pathtext}" role="button" class="buttonB"></a>
+		<footer>
+			<a th:href="@{/logout}" role="button" class="buttonR">&#10006; Cerrar Sesion</a>
+		</footer>
 	</body>
 </html>
