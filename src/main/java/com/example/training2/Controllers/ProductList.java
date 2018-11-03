@@ -1,22 +1,14 @@
 package com.example.training2.Controllers;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.annotation.security.RolesAllowed;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,11 +22,10 @@ import com.example.training2.Repositories.UserRepository;
 
 @Controller
 public class ProductList {
-	private Product prod = new Product("12345","Coca-Cola","Bebida",5);
-	private Map<String, Product> productos = new HashMap<String, Product>() {{ put ("12345",prod); }};
-	
 	@Autowired
 	private ProductRepository productRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
 	@RequestMapping(value = {"/","/login"})
 	public String login() {
@@ -45,23 +36,20 @@ public class ProductList {
 	public String logout() {
 		return "redirect:/login";
 	}
-	/*
-	@GetMapping("/")
-	public String route() {
-		return "index";
-	}*/
+	
 	@Secured({"ROLE_USER","ROLE_ADMIN"})
 	@GetMapping("/list")
-	public String list(Model model) {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserDetails userDetails = null;
-		if (principal instanceof UserDetails) {
-		  userDetails = (UserDetails) principal;
+	public String list(Model model, Authentication authentication) {
+		String username = authentication.getName();
+		User user;
+		try {
+			user = userRepository.findByNombre(username);
+		} catch(Exception e) {
+			throw new BadCredentialsException("User not found");
 		}
-		
 		List<Product> productList = productRepository.findAll();
 		model.addAttribute("productos",productList);
-		model.addAttribute("user",userDetails);
+		model.addAttribute("user",user);
 		return "list";
 	}
 	

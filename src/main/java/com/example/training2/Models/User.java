@@ -8,10 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.FetchType;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Entity
-public class User {
+public class User implements UserDetailsService {
 	@Id
 	private String nombre;
 	private String contraseña;
@@ -48,5 +51,11 @@ public class User {
 
 	public void setRoles(List<GrantedAuthority> roles) {
 		this.roles = roles;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
